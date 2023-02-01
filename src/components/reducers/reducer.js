@@ -4,6 +4,8 @@ import {
   FIRST_MOVIE,
   ADD_FAV,
   REMOVE_FAV,
+  REMOVE_MOVIE,
+  ADD_MOVIE,
 } from "../actions/actions";
 import { movies } from "../../movies";
 
@@ -48,13 +50,24 @@ function reducer(state = initialState, action) {
     }
 
     case ADD_FAV: {
-      if (!state.favMovie.includes(action.payload))
+      if (!state.favMovie.includes(action.payload)) {
+        action.payload.display = false;
         return { ...state, favMovie: [...state.favMovie, action.payload] };
-      else {
+      } else {
         return state;
       }
     }
 
+    case ADD_MOVIE:
+      return { ...state, movie: [...state.movie, action.payload] };
+
+    case REMOVE_MOVIE: {
+      let newArray = [...state.movie].filter(
+        (item) => item.id !== action.payload
+      );
+      newArray[0].display = true;
+      return { ...state, movie: newArray };
+    }
     case REMOVE_FAV:
       return {
         ...state,

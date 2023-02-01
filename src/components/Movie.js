@@ -5,6 +5,7 @@ import {
   firstMovie,
   previousMovie,
   nextMovie,
+  removeMovie,
 } from "./actions/actions";
 import { useHistory } from "react-router-dom";
 
@@ -19,7 +20,7 @@ export default function Movie(props) {
 
   function handleClickFirstMovie() {
     dispatch(firstMovie());
-    history.push(`/movie/8`);
+    history.push(`/movie/${movieList[0].id}`);
   }
 
   function handleClickPreviousPage() {
@@ -37,6 +38,10 @@ export default function Movie(props) {
   function handleClickAddFav() {
     let selectedMovie = movieList.find((item) => item.display);
     dispatch(addFav(selectedMovie));
+    dispatch(removeMovie(selectedMovie.id));
+    history.push(
+      `/movie/${movieList[movieList.indexOf(selectedMovie) + 1].id}`
+    );
   }
 
   return (
